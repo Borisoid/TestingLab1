@@ -4,3 +4,10 @@ working.txt
 *.log
 target/
 bin/
+.idea
+.iml
+target
+.classpath
+.project
+.vscode
+.settings
