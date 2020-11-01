@@ -10,7 +10,7 @@ bin/
 target
 .classpath
 .project
-.vscode
-.settings
+.vscode/
+.settings/
 target
 
