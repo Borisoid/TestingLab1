@@ -33,22 +33,22 @@ abstract public class Plane {
 
     @Override
     public String toString() {
-        return "Plane{" +
-                "model='" + model + '\'' +
-                ", maxSpeed=" + maxSpeed +
-                ", maxFlightDistance=" + maxFlightDistance +
-                ", maxLoadCapacity=" + maxLoadCapacity +
-                '}';
+        return "Plane{" 
+                + "model='" + model + '\'' 
+                + ", maxSpeed=" + maxSpeed 
+                + ", maxFlightDistance=" + maxFlightDistance 
+                + ", maxLoadCapacity=" + maxLoadCapacity 
+                + '}';
     }
 
     @Override
     public boolean equals(Object compareTo) {
         if (this == compareTo) return true;
         if (!(compareTo instanceof Plane)) return false;
-        return  maxSpeed ==             ((Plane) compareTo).maxSpeed &&
-                maxFlightDistance ==    ((Plane) compareTo).maxFlightDistance &&
-                maxLoadCapacity ==      ((Plane) compareTo).maxLoadCapacity &&
-                Objects.equals(model, ((Plane) compareTo).model);
+        return  maxSpeed == ((Plane) compareTo).maxSpeed 
+                && maxFlightDistance == ((Plane) compareTo).maxFlightDistance
+                && maxLoadCapacity == ((Plane) compareTo).maxLoadCapacity
+                && Objects.equals(model, ((Plane) compareTo).model);
     }
 
     @Override

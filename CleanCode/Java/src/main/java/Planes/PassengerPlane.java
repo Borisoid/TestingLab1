@@ -19,8 +19,9 @@ public class PassengerPlane extends Plane{
     @Override
     public String toString() {
         return super.toString().replace("}",
-                ", passengersCapacity=" + passengersCapacity +
-                '}');
+                ", passengersCapacity=" 
+                + passengersCapacity 
+                + '}');
     }
 
     @Override
