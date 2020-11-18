@@ -15,13 +15,8 @@ public class Airport {
     }
 
     public List<PassengerPlane> getPassengerPlanes() {
-        List<PassengerPlane> passengerPlanes = new ArrayList<>();
-        for (Plane currentPlane : this.planes) {
-            if (currentPlane instanceof PassengerPlane) {
-                passengerPlanes.add((PassengerPlane) currentPlane);
-            }
-        }
-        return passengerPlanes;
+        return this.planes.stream().filter(PassengerPlane.class::isInstance).
+            map(p -> (PassengerPlane) p).collect(Collectors.toList());
     }
 
     public List<MilitaryPlane> getMilitaryPlanes() {
