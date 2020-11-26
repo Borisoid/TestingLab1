@@ -31,18 +31,27 @@ public class SonyStoreTest {
     }
 
     @Test
-    public void twoItemsInCartTest() {
-        int itemsToBuy = 2;
+    public void severalItemsInCartTotalPriceTest() {
+        int numberOfItemsToBuy = 2;
 
         SonyStoreMainPage page = new SonyStoreMainPage(driver);
         page.openPage()
-            .findTotalPriceOfNFirstItemsForSale(itemsToBuy)
-            .buyNFirstItemsForSale(itemsToBuy)
+            .findTotalPriceOfNFirstItemsForSale(numberOfItemsToBuy)
+            .buyNFirstItemsForSale(numberOfItemsToBuy)
             .findTotalCartItemsPrice();
 
         Assert.assertEquals(
             page.getTotalPriceOfNFirstItemsForSale(), 
             page.getTotalCartItemsPrice()
         );
+    }
+
+    @Test
+    public void zeroItemsInCartTest() {
+        SonyStoreMainPage page = new SonyStoreMainPage(driver);
+        page.openPage();
+
+        Assert.assertTrue(page.isCartEmptyPromptShown());
+        Assert.assertFalse(page.isOrderButtonAvailable());
     }
 }

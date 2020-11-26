@@ -48,10 +48,10 @@ public class WebDriverTests {
         WebElement cart = driver.findElement(By.className("cart-link"));
         cart.click();
 
-        WebElement cartSum = driver.findElement(By.className("cart-sum"));
+        WebElement cartSumary = driver.findElement(By.className("cart-sum"));
         Assert.assertTrue(
             "Passes if cart is empty", 
-            cartSum.getText().equals("Корзина пуста")
+            cartSumary.getText().equals("Корзина пуста")
         );
 
         boolean couldPressOrdersButton;

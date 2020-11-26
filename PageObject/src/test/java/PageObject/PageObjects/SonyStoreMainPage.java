@@ -4,6 +4,7 @@ package PageObject.PageObjects;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -41,6 +42,9 @@ public class SonyStoreMainPage extends AbstractPage {
         "//div[contains(@class, 'cart-popup-block')]" + 
         "//div[@class='cart-footer']" + 
         "//span[contains(@class, 'price')]";
+
+    private final String cookiePopupCloseButtonLocator = 
+        "//*[@id='_evh-ric-c']";
 
     private int _totalPriceOfNFirstItemsForSale;
     public int getTotalPriceOfNFirstItemsForSale() {
@@ -89,7 +93,11 @@ public class SonyStoreMainPage extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         List<WebElement> buyButtons = 
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(buyButtonsLocator)));
+            wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(
+                    By.xpath(buyButtonsLocator)
+                )
+            );
        
         for(int i = 0; i < numberOfItemsToBuy; i++) {
             WebElement currentButton = buyButtons.get(i);
@@ -106,10 +114,13 @@ public class SonyStoreMainPage extends AbstractPage {
     }
 
     public SonyStoreMainPage findTotalCartItemsPrice() {
-        WebElement cart = driver.findElement(By.className("cart-link"));
-        cart.click();
-
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.className("cart-link")
+            )
+        ).click();
 
         _totalCartItemsPrice = Integer.parseInt(
             wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -124,19 +135,50 @@ public class SonyStoreMainPage extends AbstractPage {
         return this;
     }
 
+    public boolean isCartEmptyPromptShown() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.className("cart-link")
+            )
+        ).click();
+
+        return wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.className("cart-sum")
+            )
+        )
+        .getText()
+        .equals("Корзина пуста");
+    }
+
+    public boolean isOrderButtonAvailable() {
+        try {
+            driver.findElement(
+                By.xpath("//form[@class='cart-buttons']//a[text()='Оформить заказ']")
+            ).click();
+
+            return true;
+        }
+        catch(ElementNotInteractableException e) {
+            return false;
+        }
+    }
+
     // it needs to be closed since it gets in the way 
     // when selenium tries to press buy buttons
     private void closeCookiePopup() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
         wait.until(
             ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("#_evh-ric-c")
+                By.xpath(cookiePopupCloseButtonLocator)
             )
         ).click();
         wait.until(
             ExpectedConditions.not(
                 ExpectedConditions.visibilityOfElementLocated(
-                    By.cssSelector("#_evh-ric-c")
+                    By.xpath(cookiePopupCloseButtonLocator)
                 )
             )
         );
