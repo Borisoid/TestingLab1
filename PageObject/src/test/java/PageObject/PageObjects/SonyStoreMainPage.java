@@ -6,9 +6,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,6 +25,14 @@ public class SonyStoreMainPage extends AbstractPage {
     private final String buyButtonsLocator = 
         "//*[contains(@class, 'item-button') and " + 
         "contains(@class, 'sale_button') and " + 
+        "not(contains(@class, 'hide'))]" + 
+        "/a[contains(@class, 'button-buy')]";
+
+    private final String inCartButtonsLocator =
+        "//*[contains(@class, 'item-button') and " + 
+        "contains(@class, 'sale_button') and " + 
+        "not(contains(@class, 'hide'))]" + 
+        "//*[contains(@class, 'button-in_cart') and " + 
         "not(contains(@class, 'hide'))]";
 
     private final String cartTotalPriceLocator = 
@@ -44,24 +49,29 @@ public class SonyStoreMainPage extends AbstractPage {
     public SonyStoreMainPage openPage() {
         driver.get(pageUrl);
         
+        closeCookiePopup();
+
         return this;
     }
 
     public int getTotalPriceOfNFirstItemsForSale(int numberOfItems) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-        wait.until(
-            ExpectedConditions.presenceOfAllElementsLocatedBy(
-                By.xpath(itemsForSalePricesLocator)
-            )
-        );
+        // wait.until(
+        //     ExpectedConditions.presenceOfAllElementsLocatedBy(
+        //         By.xpath(itemsForSalePricesLocator)
+        //     )
+        // );
 
-        List<WebElement> priceSpan = driver.findElements(
-            By.xpath(itemsForSalePricesLocator)
-        );
+        List<WebElement> priceSpans = 
+            wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(
+                    By.xpath(itemsForSalePricesLocator)
+                )
+            );
 
         int totalPrice = 0;
         for(int i = 0; i < numberOfItems; i++) {
-            totalPrice += Integer.parseInt(priceSpan.get(i).getText().replace('"', ' ').trim() );
+            totalPrice += Integer.parseInt(priceSpans.get(i).getText().replace('"', ' ').trim() );
         }
         
         return totalPrice;
@@ -69,20 +79,19 @@ public class SonyStoreMainPage extends AbstractPage {
 
     public SonyStoreMainPage buyNFirstItemsForSale(int numberOfItemsToBuy) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(buyButtonsLocator)));
 
-        List<WebElement> buyButtons = driver.findElements(By.xpath(buyButtonsLocator));
+        List<WebElement> buyButtons = 
+            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(buyButtonsLocator)));
        
         for(int i = 0; i < numberOfItemsToBuy; i++) {
             WebElement currentButton = buyButtons.get(i);
 
-            Actions scrollAction = new Actions(driver);
-            scrollAction.moveToElement(currentButton);
-            scrollAction.perform();
+            WebElement buyButton = wait.until(ExpectedConditions.visibilityOf(currentButton));
+            buyButton.click();
 
-            wait.until(ExpectedConditions.visibilityOf(currentButton));
-            
-            currentButton.click();
+            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.xpath(inCartButtonsLocator)
+            ));
         }
 
         return this;
@@ -93,12 +102,31 @@ public class SonyStoreMainPage extends AbstractPage {
         cart.click();
 
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cartTotalPriceLocator)));
+        // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cartTotalPriceLocator)));
 
         return Integer.parseInt(
-            driver.findElement(By.xpath(cartTotalPriceLocator))
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cartTotalPriceLocator)))
             .getText()
             .replace('p', ' ')
+            .trim()
+        );
+    }
+
+    //it needs to be closed since it gets in the way 
+    //when selenium tries to press buy buttons
+    private void closeCookiePopup() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("#_evh-ric-c")
+            )
+        ).click();
+        wait.until(
+            ExpectedConditions.not(
+                ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("#_evh-ric-c")
+                )
+            )
         );
     }
 }
