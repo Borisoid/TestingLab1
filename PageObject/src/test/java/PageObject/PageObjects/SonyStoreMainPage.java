@@ -21,7 +21,9 @@ public class SonyStoreMainPage extends AbstractPage {
         "//div[@class='item-price']" + 
         "//span[@itemprop='price']";
 
-    //item may have sale button, preorder button or sold out button (has calss hide)
+    //item has buy button, preorder button, sold out button and in-cart button
+    //at the same time. 
+    //all of them but currently active have class .hide
     private final String buyButtonsLocator = 
         "//*[contains(@class, 'item-button') and " + 
         "contains(@class, 'sale_button') and " + 
@@ -40,6 +42,15 @@ public class SonyStoreMainPage extends AbstractPage {
         "//div[@class='cart-footer']" + 
         "//span[contains(@class, 'price')]";
 
+    private int _totalPriceOfNFirstItemsForSale;
+    public int getTotalPriceOfNFirstItemsForSale() {
+        return _totalPriceOfNFirstItemsForSale;
+    }
+
+    private int _totalCartItemsPrice;
+    public int getTotalCartItemsPrice() {
+        return _totalCartItemsPrice;
+    }
 
     public SonyStoreMainPage(WebDriver driver) {
         super(driver);
@@ -54,13 +65,8 @@ public class SonyStoreMainPage extends AbstractPage {
         return this;
     }
 
-    public int getTotalPriceOfNFirstItemsForSale(int numberOfItems) {
+    public SonyStoreMainPage findTotalPriceOfNFirstItemsForSale(int numberOfItems) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-        // wait.until(
-        //     ExpectedConditions.presenceOfAllElementsLocatedBy(
-        //         By.xpath(itemsForSalePricesLocator)
-        //     )
-        // );
 
         List<WebElement> priceSpans = 
             wait.until(
@@ -74,7 +80,9 @@ public class SonyStoreMainPage extends AbstractPage {
             totalPrice += Integer.parseInt(priceSpans.get(i).getText().replace('"', ' ').trim() );
         }
         
-        return totalPrice;
+        _totalPriceOfNFirstItemsForSale = totalPrice;
+
+        return this;
     }
 
     public SonyStoreMainPage buyNFirstItemsForSale(int numberOfItemsToBuy) {
@@ -97,23 +105,27 @@ public class SonyStoreMainPage extends AbstractPage {
         return this;
     }
 
-    public int getTotalCartItemsPrice() {
+    public SonyStoreMainPage findTotalCartItemsPrice() {
         WebElement cart = driver.findElement(By.className("cart-link"));
         cart.click();
 
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-        // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cartTotalPriceLocator)));
 
-        return Integer.parseInt(
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(cartTotalPriceLocator)))
+        _totalCartItemsPrice = Integer.parseInt(
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath(cartTotalPriceLocator)
+                )
+            )
             .getText()
             .replace('p', ' ')
             .trim()
         );
+
+        return this;
     }
 
-    //it needs to be closed since it gets in the way 
-    //when selenium tries to press buy buttons
+    // it needs to be closed since it gets in the way 
+    // when selenium tries to press buy buttons
     private void closeCookiePopup() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
         wait.until(

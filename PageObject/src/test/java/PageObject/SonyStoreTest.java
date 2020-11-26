@@ -1,6 +1,7 @@
 package PageObject;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -31,10 +32,17 @@ public class SonyStoreTest {
 
     @Test
     public void twoItemsInCartTest() {
+        int itemsToBuy = 2;
+
         SonyStoreMainPage page = new SonyStoreMainPage(driver);
-        page.openPage();
-        System.out.println(page.getTotalPriceOfNFirstItemsForSale(2));
-        page.buyNFirstItemsForSale(2);
-        System.out.println(page.getTotalCartItemsPrice());
+        page.openPage()
+            .findTotalPriceOfNFirstItemsForSale(itemsToBuy)
+            .buyNFirstItemsForSale(itemsToBuy)
+            .findTotalCartItemsPrice();
+
+        Assert.assertEquals(
+            page.getTotalPriceOfNFirstItemsForSale(), 
+            page.getTotalCartItemsPrice()
+        );
     }
 }
