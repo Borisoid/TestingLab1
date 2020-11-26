@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,8 +33,14 @@ public class WebDriverTests {
         driver = null;
     }
 
+//  Test case:
+//  Заказать 0 товаров.
+// 	Выбрать любой из представленных товаров и нажать кнопку "Купить" ->
+// 	Удалить товар из корзины ->
+// 	Нажать кнопку "оформить заказ"
+//  Ожидаемый результат: кнопка "оформить заказ" недоступна; оповешение о том, что корзина пуста.
     @Test
-    public void noItemsInCartTest() throws InterruptedException {
+    public void noItemsInCartTest() {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         driver.get("https://store.sony.ru");
