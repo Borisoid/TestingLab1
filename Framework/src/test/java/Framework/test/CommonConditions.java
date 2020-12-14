@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 import Framework.driver.DriverSingleton;
 
-public class AbstractTest {
+public class CommonConditions {
     protected WebDriver driver;
 
     @Before

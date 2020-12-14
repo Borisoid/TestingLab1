@@ -7,7 +7,7 @@ import Framework.page.CartPage;
 import Framework.page.CartPageElement;
 import Framework.page.ProductPage;
 
-public class TestTest extends AbstractTest {
+public class TestTest extends CommonConditions {
 
     @Test
     public void severalItemsInCartTotalPriceTest() {
@@ -29,9 +29,6 @@ public class TestTest extends AbstractTest {
 
     @Test
     public void cartItemDeletionTest() {
-        // new MainPage(driver)
-        //     .openPage();
-
         new ProductPage(driver)
             .setProduct("smartfon-xperia-1-ii-317261")
             .openPage()
