@@ -43,8 +43,8 @@ public class ProductPage extends AbstractPage {
     }
 
     @Override
-    public ProductPage closeModalPopup() {
-        super.closeModalPopup();
+    public ProductPage closeModalPopupIfPresent(boolean present) {
+        super.closeModalPopupIfPresent(present);
 
         return this;
     }

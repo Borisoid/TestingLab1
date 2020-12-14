@@ -102,12 +102,13 @@ public class SonyStoreMainPage extends AbstractPage {
         for(int i = 0; i < numberOfItemsToBuy; i++) {
             WebElement currentButton = buyButtons.get(i);
 
-            WebElement buyButton = wait.until(ExpectedConditions.visibilityOf(currentButton));
-            buyButton.click();
+            wait.until(ExpectedConditions.visibilityOf(currentButton)).click();
 
-            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.xpath(inCartButtonsLocator)
-            ));
+            wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.xpath(inCartButtonsLocator)
+                )
+            );
         }
 
         return this;
@@ -123,7 +124,8 @@ public class SonyStoreMainPage extends AbstractPage {
         ).click();
 
         _totalCartItemsPrice = Integer.parseInt(
-            wait.until(ExpectedConditions.visibilityOfElementLocated(
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
                     By.xpath(cartTotalPriceLocator)
                 )
             )
