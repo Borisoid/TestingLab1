@@ -1,8 +1,6 @@
 package Framework.page;
 
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
@@ -11,9 +9,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.Keys;
 
-import Framework.utils.CartPageElementLocatorResolver;
 import Framework.model.User;
-import Framework.service.TestDataReader;
 
 public class LoginPageElement extends AbstractPage {
 
@@ -41,6 +37,13 @@ public class LoginPageElement extends AbstractPage {
         wait.until(ExpectedConditions.visibilityOf(loginPopup));
 
         return this;
+    }
+
+    public void closePage() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
+        wait.until(ExpectedConditions.invisibilityOf(loginPopup));
     }
 
     public LoginPageElement login(User user) {
