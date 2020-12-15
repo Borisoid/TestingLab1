@@ -8,6 +8,7 @@ import Framework.page.CartPage;
 import Framework.page.CartPageElement;
 import Framework.page.ProductPage;
 import Framework.service.ItemCreator;
+import Framework.service.TestDataReader;
 
 public class CartTest extends CommonConditions {
     @Test
@@ -27,8 +28,36 @@ public class CartTest extends CommonConditions {
 
         Assert.assertEquals(
             new CartPage(driver).openPage().getItemsPrise(), 
-            firstItem.getPrice() + secondItem.getPrice()
+            Integer.parseInt(
+                TestDataReader.getTestData(
+                    "Framework.test.cartTest.severalItemsInCartTotalPriceTest.expectedTotalPrice"
+                )
+            )
         );
+    }
+
+    @Test
+    public void itemsInCartAreSameAsWhatWereAddedTest() {
+        Item firstExpectedItem = ItemCreator.constructFromProperties(1);
+        Item secondExpectedItem = ItemCreator.constructFromProperties(2);
+
+        new ProductPage(driver)
+            .setProduct(firstExpectedItem.getUrl())
+            .openPage()
+            .buy()
+            .closeModalPopupIfPresent(firstExpectedItem.getGiftModalPopupExpected())
+            .setProduct(secondExpectedItem.getUrl())
+            .openPage()
+            .buy()
+            .closeModalPopupIfPresent(secondExpectedItem.getGiftModalPopupExpected());
+
+        CartPageElement cartPageElement = new CartPageElement(driver).openPage();
+
+        Item firstItemInCart = cartPageElement.getItem(1);
+        Item secondItemInCart = cartPageElement.getItem(2);
+
+        Assert.assertEquals(firstExpectedItem, firstItemInCart);
+        Assert.assertEquals(secondExpectedItem, secondItemInCart);
     }
 
     @Test
@@ -47,7 +76,11 @@ public class CartTest extends CommonConditions {
 
         Assert.assertEquals(
             new CartPage(driver).openPage().getItemsPrise(), 
-            item.getPrice() * 2
+            Integer.parseInt(
+                TestDataReader.getTestData(
+                    "Framework.test.cartTest.incartAddTest.expectedTotalPrice"
+                )
+            )
         );
     }
 

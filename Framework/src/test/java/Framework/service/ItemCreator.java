@@ -4,11 +4,11 @@ import Framework.model.Item;
 
 public class ItemCreator {
     private final static String TEST_ITEM_URL_TEMPLATE = 
-        "Framework.test.item.%d.url";
+        "Framework.test.generic.item.%d.url";
     private final static String TEST_ITEM_PRICE_TEMPLATE = 
-        "Framework.test.item.%d.price";
+        "Framework.test.generic.item.%d.price";
     private final static String TEST_ITEM_GIFT_MODAL_POPUP_EXPECTED_TEMPLATE = 
-        "Framework.test.item.%d.giftModalPopupExpected";
+        "Framework.test.generic.item.%d.giftModalPopupExpected";
 
     public static Item constructFromProperties(int itemNumber) {
         String url = 

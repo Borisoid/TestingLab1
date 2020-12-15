@@ -26,11 +26,9 @@ public class Item {
         if(!(other instanceof Item) ) {
             return false;
         }
-        if(this.url == ((Item)other).getUrl() && this.price == ((Item)other).getPrice()) {
-            return true;
-        } else {
-            return false;
-        }
+        Item otherItem = (Item)other;
+        return 
+            (this.url.equals(otherItem.getUrl()) && this.price == otherItem.getPrice());
     }
 
     @Override
