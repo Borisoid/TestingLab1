@@ -10,13 +10,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import static Framework.utils.cartPageElementLocatorResolver.getRemoveItemButtonLocator;
+import Framework.utils.CartPageElementLocatorResolver;
+import Framework.model.Item;
+import Framework.service.TestDataReader;
+
+// import static Framework.utils.cartPageElementLocatorResolver.getRemoveItemButtonLocator;
 
 public class CartPageElement extends AbstractPage {
     private final String cartListChildrenLocator = "//*[@class='cart-list']//*";
     
     @FindBy(xpath = "//*[contains(@class,'cart-link')]")
     private WebElement cartLink;
+
+    @FindBy(xpath = "(//*[contains(@class,'cart-popup')])[3]")
+    private WebElement cartPopup;
 
     public CartPageElement(WebDriver driver) {
         super(driver);
@@ -27,8 +34,16 @@ public class CartPageElement extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
+        wait.until(ExpectedConditions.visibilityOf(cartPopup));
 
         return this;
+    }
+
+    public void closePage() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
+        wait.until(ExpectedConditions.invisibilityOf(cartPopup));
     }
 
     public boolean isEmpty() {
@@ -50,7 +65,7 @@ public class CartPageElement extends AbstractPage {
         WebElement removeItemButton = 
             wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath(getRemoveItemButtonLocator(itemOrder))
+                    CartPageElementLocatorResolver.getRemoveItemButtonLocator(itemOrder)
                 )
             );
         removeItemButton.click();
@@ -61,5 +76,38 @@ public class CartPageElement extends AbstractPage {
 
     public CartPageElement removeItem() {
         return removeItem(1);
+    }
+
+    public CartPageElement itemCountIncrease(int itemOrder) {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                CartPageElementLocatorResolver.getItemCountIncreaseButtonLocator(itemOrder)
+            )
+        ).click();
+
+        return this;
+    }
+
+    public Item getItem(int itemOrder) {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        String url =
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                    CartPageElementLocatorResolver.getItemUrlLocator(itemOrder)
+                )
+            ).getAttribute("href")
+            .replace(TestDataReader.getTestData("Framework.test.site.prefix"), "");
+
+        String price =
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                    CartPageElementLocatorResolver.getItemPriceLocator(itemOrder)
+                )
+            ).getText().replaceAll("[^\\d]", "");
+
+        return new Item(url, Integer.parseInt(price), false);
     }
 }

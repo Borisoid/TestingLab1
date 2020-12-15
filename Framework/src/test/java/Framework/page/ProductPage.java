@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ProductPage extends AbstractPage {
-    private final String BASE_URL = "https://store.sony.ru/product/";
+    private final String BASE_URL = "https://store.sony.ru";
 
     private String productId;
 
