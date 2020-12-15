@@ -4,11 +4,32 @@ public class Item {
     private String url;
     private int price;
     private boolean giftModalPopupExpected;
+    private String id;
 
     public Item(String url, int price, boolean giftModalPopupExpected) {
         this.url = url;
         this.price = price;
         this.giftModalPopupExpected = giftModalPopupExpected;
+    }
+
+    public Item(String url, int price, boolean giftModalPopupExpected, String id) {
+        this.url = url;
+        this.price = price;
+        this.giftModalPopupExpected = giftModalPopupExpected;
+        this.id = id;
+    }
+
+    public Item(String url, int price) {
+        this.url = url;
+        this.price = price;
+        this.giftModalPopupExpected = false;
+    }
+
+    public Item(String url, int price, String id) {
+        this.url = url;
+        this.price = price;
+        this.giftModalPopupExpected = false;
+        this.id = id;
     }
 
     public String getUrl() {
@@ -19,6 +40,9 @@ public class Item {
     }
     public boolean getGiftModalPopupExpected() {
         return giftModalPopupExpected;
+    }
+    public String getId() {
+        return id;
     }
 
     @Override

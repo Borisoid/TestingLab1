@@ -9,6 +9,8 @@ public class ItemCreator {
         "Framework.test.generic.item.%d.price";
     private final static String TEST_ITEM_GIFT_MODAL_POPUP_EXPECTED_TEMPLATE = 
         "Framework.test.generic.item.%d.giftModalPopupExpected";
+    private final static String TEST_ITEM_ID_TEMPLATE = 
+        "Framework.test.generic.item.%d.id";
 
     public static Item constructFromProperties(int itemNumber) {
         String url = 
@@ -19,11 +21,13 @@ public class ItemCreator {
             TestDataReader.getTestData(
                 String.format(TEST_ITEM_GIFT_MODAL_POPUP_EXPECTED_TEMPLATE, itemNumber)
             );
+        String id = TestDataReader.getTestData(String.format(TEST_ITEM_ID_TEMPLATE, itemNumber));
 
         return new Item(
             url,
             Integer.parseInt(price),
-            Boolean.parseBoolean(giftModalPopupExpected)
+            Boolean.parseBoolean(giftModalPopupExpected),
+            id
         );
     }
 }

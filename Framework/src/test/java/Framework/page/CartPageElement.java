@@ -108,6 +108,6 @@ public class CartPageElement extends AbstractPage {
                 )
             ).getText().replaceAll("[^\\d]", "");
 
-        return new Item(url, Integer.parseInt(price), false);
+        return new Item(url, Integer.parseInt(price));
     }
 }

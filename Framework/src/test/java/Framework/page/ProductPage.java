@@ -15,6 +15,9 @@ public class ProductPage extends AbstractPage {
 
     @FindBy(xpath = "//*[contains(@class, 'product-top__cont')]//*[contains(@class, 'button-buy')]")
     private WebElement mainBuyButton;
+
+    @FindBy(className = "add_compare")
+    private WebElement compareLink;
     
     public ProductPage(WebDriver driver) {
         super(driver);
@@ -38,6 +41,14 @@ public class ProductPage extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         wait.until(ExpectedConditions.elementToBeClickable(mainBuyButton)).click();
+
+        return this;
+    }
+
+    public ProductPage addToComparison() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(ExpectedConditions.elementToBeClickable(compareLink)).click();
 
         return this;
     }
