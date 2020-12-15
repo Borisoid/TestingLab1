@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import Framework.utils.ComparisonPageElementLocatorResolver;
+import Framework.utils.ComparisonPageLocatorResolver;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
@@ -30,7 +30,7 @@ public class ComparisonPage extends AbstractPage {
         return 
             wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                    ComparisonPageElementLocatorResolver
+                    ComparisonPageLocatorResolver
                         .getComparedParameterLocator(itemId, rowNumber)
                 )
             ).getText();
