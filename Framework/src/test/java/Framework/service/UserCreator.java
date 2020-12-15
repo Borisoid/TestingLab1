@@ -4,11 +4,11 @@ import Framework.model.User;
 
 public class UserCreator {
     private final static String TEST_USER_EMAIL_TEMPLATE = 
-        "Framework.test.loginTest.generic.user.%d.email";
+        "Framework.test.generic.user.%d.email";
     private final static String TEST_USER_PASSWORD_TEMPLATE = 
-        "Framework.test.loginTest.generic.user.%d.password";
+        "Framework.test.generic.user.%d.password";
     private final static String TEST_USER_NAME_TEMPLATE = 
-        "Framework.test.loginTest.generic.user.%d.username";
+        "Framework.test.generic.user.%d.username";
 
     public static User constructFromProperties(int userNumber) {
         String email = 
