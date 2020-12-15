@@ -3,7 +3,7 @@
 <suite name="Smoke" verbose="1" >
     <test name="UserAccess" junit="true">
         <classes>
-            <class name="Framework.test.LoginTest"/>
+            <class name="Framework.test.UserDataTest"/>
         </classes>
     </test>
 </suite>
