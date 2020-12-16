@@ -6,38 +6,49 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import Framework.utils.FavoritePageLocatorResolver;
+import Framework.utils.FiltersPageLocatorResolver;
 import Framework.wait.WaitJQueryAJAXCompleted;
 
-public class FavoritePage extends ItemContainerAbstractPage {
-    private final String BASE_URL = "https://store.sony.ru/personal_cabinet/favorite/";
+public class FiltersPage extends ItemContainerAbstractPage {
+    private final String BASE_URL = "https://store.sony.ru";
 
-    public FavoritePage(WebDriver driver) {
+    private String pageUrl;
+
+    public FiltersPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-    public FavoritePage openPage() {
-        driver.get(BASE_URL);
+    public FiltersPage setPage(String pageUrl) {
+        this.pageUrl = pageUrl;
 
         return this;
     }
 
-    public FavoritePage removeItem (String id) {
+    public FiltersPage openPage() {
+        driver.get(BASE_URL + pageUrl);
+
+        return this;
+    }
+
+    @Override
+    public FiltersPage closeCookiePopup() {
+        super.closeCookiePopup();
+
+        return this;
+    }
+
+    public FiltersPage clickCheckBox(String label) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         wait.until(
             ExpectedConditions.visibilityOfElementLocated(
-                FavoritePageLocatorResolver.getRemoveItemButtonLocator(id)
+                FiltersPageLocatorResolver.getFillterCheckboxLocator(label)
             )
         ).click();
 
         wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
 
         return this;
-    }
-
-    public FavoritePage removeItem() {
-        return removeItem("");
     }
 }

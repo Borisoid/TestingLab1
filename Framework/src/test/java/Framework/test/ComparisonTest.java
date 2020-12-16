@@ -44,6 +44,4 @@ public class ComparisonTest extends CommonConditions {
             )
         );
     }
-
-    // (//*[contains(@class,'item 317261')])[1]
 }

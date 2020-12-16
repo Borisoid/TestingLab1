@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import Framework.page.FavoritePage;
 import Framework.service.ItemCreator;
-import Framework.service.TestDataReader;
 import Framework.model.Item;
 import Framework.model.User;
 import Framework.service.UserCreator;
@@ -34,6 +33,8 @@ public class FavoriteTest extends CommonConditions {
 
         Item actualItem = favoritePage.getItem(expectedItem.getId());
 
+        // fav items are saved on server, so i need to remove already added item
+        // for test to keep working
         favoritePage.removeItem(expectedItem.getId());
 
         Assert.assertEquals(expectedItem, actualItem);
