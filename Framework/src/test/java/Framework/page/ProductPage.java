@@ -11,13 +11,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ProductPage extends AbstractPage {
     private final String BASE_URL = "https://store.sony.ru";
 
-    private String productId;
+    private String productUrl;
 
     @FindBy(xpath = "//*[contains(@class, 'product-top__cont')]//*[contains(@class, 'button-buy')]")
     private WebElement mainBuyButton;
 
     @FindBy(className = "add_compare")
     private WebElement compareLink;
+
+    @FindBy(className = "to-fav")
+    private WebElement toFavoriteLink;
     
     public ProductPage(WebDriver driver) {
         super(driver);
@@ -26,13 +29,13 @@ public class ProductPage extends AbstractPage {
 
     @Override
     public ProductPage openPage() {
-        driver.get(BASE_URL + productId);
+        driver.get(BASE_URL + productUrl);
 
         return this;
     }
 
-    public ProductPage setProduct(String productId) {
-        this.productId = productId;
+    public ProductPage setProduct(String productUrl) {
+        this.productUrl = productUrl;
 
         return this;
     }
@@ -49,6 +52,14 @@ public class ProductPage extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         wait.until(ExpectedConditions.elementToBeClickable(compareLink)).click();
+
+        return this;
+    }
+
+    public ProductPage addToFavorite() {
+        Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
+
+        wait.until(ExpectedConditions.visibilityOf(toFavoriteLink)).click();
 
         return this;
     }

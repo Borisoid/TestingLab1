@@ -2,7 +2,7 @@ package Framework.utils;
 
 import org.openqa.selenium.By;
 
-public class SearchPageLocatorResolver {
+public class ItemElementLocatorResolver {
     public static By getElementContainingUrlLocator(String id) {
         return By.className("product_url_" + id);
     }
@@ -15,5 +15,4 @@ public class SearchPageLocatorResolver {
                 )
             );
     }
-    //div[@rel='317401']//div[@class='item-price']//span[@itemprop='price']
 }
