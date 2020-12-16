@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Smoke" verbose="1" >
-    <test name="UserAccess" junit="true">
+<suite name="Search test" verbose="1" >
+    <test name="Search test">
         <classes>
             <class name="Framework.test.SearchTest"/>
         </classes>

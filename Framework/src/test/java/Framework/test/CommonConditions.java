@@ -1,20 +1,24 @@
 package Framework.test;
 
-import org.junit.After;
-import org.junit.Before;
-import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Listeners;
+
+import Framework.utils.TestListener;
 import Framework.driver.DriverSingleton;
 
+@Listeners({TestListener.class})
 public class CommonConditions {
     protected WebDriver driver;
 
-    @Before
+    @BeforeMethod
     public void initialize() {
         driver = DriverSingleton.getDriver();
     }
 
-    @After
+    @AfterMethod
     public void cleanup() {
         DriverSingleton.closeDriver();
     }

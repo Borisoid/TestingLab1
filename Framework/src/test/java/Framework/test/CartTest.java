@@ -1,7 +1,7 @@
 package Framework.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import Framework.model.Item;
 import Framework.page.CartPage;
