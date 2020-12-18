@@ -18,23 +18,40 @@ public class FavoritePage extends ItemContainerAbstractPage {
     }
 
     public FavoritePage openPage() {
-        driver.get(BASE_URL);
+        try{
+            driver.get(BASE_URL);
 
-        return this;
+            logger.info("Opened FavoritePage");
+
+            return this;
+        } catch(Exception e) {
+            logger.error("Could not open FavoritePage" , e
+            );
+
+            throw e;
+        }
     }
 
     public FavoritePage removeItem (String id) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(
-            ExpectedConditions.visibilityOfElementLocated(
-                FavoritePageLocatorResolver.getRemoveItemButtonLocator(id)
-            )
-        ).click();
+        try{
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                    FavoritePageLocatorResolver.getRemoveItemButtonLocator(id)
+                )
+            ).click();
+            wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
 
-        wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
+            logger.info("Removed item[" + id + "] from fovorites");
 
-        return this;
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not remove item[" + id +"] from favorites" , e);
+
+            throw e;
+        }
     }
 
     public FavoritePage removeItem() {

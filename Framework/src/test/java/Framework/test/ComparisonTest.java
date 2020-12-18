@@ -11,7 +11,9 @@ import Framework.service.TestDataReader;
 
 public class ComparisonTest extends CommonConditions {
     @Test
-    public void compareItems() {
+    public void compareItemsTest() {
+        logger.info("compareItemsTest");
+
         Item firstItem = ItemCreator.constructFromProperties(1);
         Item secondItem = ItemCreator.constructFromProperties(2);
 
@@ -29,7 +31,7 @@ public class ComparisonTest extends CommonConditions {
             TestDataReader.getTestData(
                 "Framework.test.comparisonTest.compareItems.row.1.item.1.expectedValue"
             ), 
-            comparisonPage.getComparedParemeter(
+            comparisonPage.getComparedParameter(
                 firstItem.getId(), 
                 TestDataReader.getTestData("Framework.test.comparisonTest.compareItems.row")
             )
@@ -38,7 +40,7 @@ public class ComparisonTest extends CommonConditions {
             TestDataReader.getTestData(
                 "Framework.test.comparisonTest.compareItems.row.1.item.2.expectedValue"
             ), 
-            comparisonPage.getComparedParemeter(
+            comparisonPage.getComparedParameter(
                 secondItem.getId(), 
                 TestDataReader.getTestData("Framework.test.comparisonTest.compareItems.row")
             )

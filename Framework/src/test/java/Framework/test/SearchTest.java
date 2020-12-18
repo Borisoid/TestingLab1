@@ -11,6 +11,8 @@ import Framework.model.Item;
 public class SearchTest extends CommonConditions{
     @Test
     public void searchTest() {
+        logger.info("searchTest");
+
         Item expectedItem = ItemCreator.constructFromProperties(3);
         Item actualItem = 
             new SearchPage(driver)

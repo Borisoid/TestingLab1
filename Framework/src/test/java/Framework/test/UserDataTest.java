@@ -13,6 +13,8 @@ import Framework.model.User;
 public class UserDataTest extends CommonConditions {
     @Test
     public void loginTest() {
+        logger.info("loggerTest");
+
         User user = UserCreator.constructFromProperties(1);
 
         new MainPage(driver).openPage();
@@ -31,6 +33,8 @@ public class UserDataTest extends CommonConditions {
 
     @Test
     public void setTownTest() {
+        logger.info("setTownTest");
+
         String inputTownName = 
             TestDataReader.getTestData("Framework.test.userDataTest.setTownTest.inputValue");
         String expectedTownName =

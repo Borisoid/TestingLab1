@@ -11,6 +11,8 @@ import Framework.model.Item;
 public class FiltersTest extends CommonConditions {
     @Test
     public void filtersTest() {
+        logger.info("filtesrsTest");
+
         Item expectedItem1 = ItemCreator.constructFromProperties(5);
         Item expectedItem2 = ItemCreator.constructFromProperties(6);
 

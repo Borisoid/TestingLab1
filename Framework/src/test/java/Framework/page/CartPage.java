@@ -18,12 +18,32 @@ public class CartPage extends AbstractPage {
 
     @Override
     public CartPage openPage() {
-        driver.get(BASE_URL);
+        try{
+            driver.get(BASE_URL);
 
-        return this;
+            logger.info("Opened CartPage");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not open CartPage", e);
+
+            throw e;
+        }
     }
 
     public int getItemsPrise() {
-        return Integer.parseInt(itemsPrise.getText().replaceAll("[^\\d]", ""));
+        try{
+            int itemsPrice = Integer.parseInt(itemsPrise.getText().replaceAll("[^\\d]", ""));
+
+            logger.info("Got cart items price: " + itemsPrice);
+
+            return itemsPrice;
+
+        } catch(Exception e) {
+            logger.error("Could not get items price on cart page" , e);
+
+            throw e;
+        }
     }
 }

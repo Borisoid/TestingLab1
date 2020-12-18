@@ -11,10 +11,17 @@ public class MainPage extends AbstractPage{
 
     @Override
     public MainPage openPage() {
-        driver.get(BASE_URL);
+        try{
+            driver.get(BASE_URL);
 
-        return this;
+            logger.info("Opened MainPage");
+
+            return this;
+            
+        } catch(Exception e) {
+            logger.error("Could not open MainPage" , e);
+            
+            throw e;
+        }
     }
-
-    
 }

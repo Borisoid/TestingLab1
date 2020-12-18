@@ -10,6 +10,7 @@ import Framework.utils.ItemElementLocatorResolver;
 import Framework.model.Item;
 
 public abstract class ItemContainerAbstractPage extends AbstractPage {
+
     public ItemContainerAbstractPage(WebDriver driver) {
         super(driver);
     }
@@ -17,21 +18,30 @@ public abstract class ItemContainerAbstractPage extends AbstractPage {
     public Item getItem(String productId) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        String url =
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    ItemElementLocatorResolver.getElementContainingUrlLocator(productId)
-                )
-            ).getAttribute("href")
-            .replace(TestDataReader.getTestData("Framework.test.site.prefix"), "");
+        try{
+            String url =
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        ItemElementLocatorResolver.getElementContainingUrlLocator(productId)
+                    )
+                ).getAttribute("href")
+                .replace(TestDataReader.getTestData("Framework.test.site.prefix"), "");
 
-        String price =
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    ItemElementLocatorResolver.getItemPriceLocator(productId)
-                )
-            ).getText().replaceAll("[^\\d]", "");
+            String price =
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        ItemElementLocatorResolver.getItemPriceLocator(productId)
+                    )
+                ).getText().replaceAll("[^\\d]", "");
 
-        return new Item(url, Integer.parseInt(price), false);
+            logger.info("Got item[" + productId + "] URL: " + url + " Price: " + price);
+
+            return new Item(url, Integer.parseInt(price), false);
+            
+        } catch(Exception e) {
+            logger.error("Could not get item[" + productId + "]" , e);
+
+            throw e;
+        }
     }
 }

@@ -14,7 +14,9 @@ import Framework.page.ProductPage;
 
 public class FavoriteTest extends CommonConditions {
     @Test
-    public void FaforiteTest() {
+    public void addToFaforiteTest() {
+        logger.info("addToFavoriteTest");
+
         User user = UserCreator.constructFromProperties(1);
         Item expectedItem = ItemCreator.constructFromProperties(4);
 

@@ -19,20 +19,44 @@ public class ComparisonPage extends AbstractPage {
 
     @Override
     public ComparisonPage openPage() {
-        driver.get(BASE_URL);
+        try{
+            driver.get(BASE_URL);
 
-        return this;
+            logger.info("Opened ComparisonPage");
+
+            return this;
+        } catch(Exception e) {
+            logger.error("Could not open ComparisonPage" , e);
+
+            throw e;
+        }
     }
 
-    public String getComparedParemeter(String itemId, String rowNumber) {
+    public String getComparedParameter(String itemId, String rowNumber) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        return 
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    ComparisonPageLocatorResolver
-                        .getComparedParameterLocator(itemId, rowNumber)
-                )
-            ).getText();
+        try{
+            String comparedParameter =
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        ComparisonPageLocatorResolver
+                            .getComparedParameterLocator(itemId, rowNumber)
+                    )
+                ).getText();
+
+            logger.info("Got item[" + itemId + "] "
+                + "comparison parameter at row [" + rowNumber + "] : " 
+                + comparedParameter);
+
+            return comparedParameter;
+
+        } catch(Exception e) {
+            logger.error("Could not get item[" + itemId + "] " 
+                + "comparison parameter at row [" + rowNumber + "]",
+                e
+            );
+
+            throw e;
+        }
     }
 }

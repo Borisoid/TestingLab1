@@ -13,6 +13,8 @@ import Framework.service.TestDataReader;
 public class CartTest extends CommonConditions {
     @Test
     public void severalItemsInCartTotalPriceTest() {
+        logger.info("severalItemsInCartTotalPriceTest");
+
         Item firstItem = ItemCreator.constructFromProperties(1);
         Item secondItem = ItemCreator.constructFromProperties(2);
 
@@ -38,6 +40,8 @@ public class CartTest extends CommonConditions {
 
     @Test
     public void itemsInCartAreSameAsWhatWereAddedTest() {
+        logger.info("itemsInCartAreSameAsWhatWereAddedTest");
+
         Item firstExpectedItem = ItemCreator.constructFromProperties(1);
         Item secondExpectedItem = ItemCreator.constructFromProperties(2);
 
@@ -62,6 +66,8 @@ public class CartTest extends CommonConditions {
 
     @Test
     public void incartAddTest() {
+        logger.info("incartAddTest");
+
         Item item = ItemCreator.constructFromProperties(2);
 
         new ProductPage(driver)
@@ -86,6 +92,8 @@ public class CartTest extends CommonConditions {
 
     @Test
     public void cartItemDeletionTest() {
+        logger.info("cartItemDeletionTest");
+
         Item firstItem = ItemCreator.constructFromProperties(1);
         Item secondItem = ItemCreator.constructFromProperties(2);
 

@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractPage {
-    private final Logger logger = LogManager.getRootLogger();
+    protected final Logger logger = LogManager.getRootLogger();
 
 	protected WebDriver driver;
 

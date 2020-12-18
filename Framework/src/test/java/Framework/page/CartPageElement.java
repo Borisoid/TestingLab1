@@ -11,10 +11,9 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import Framework.utils.CartPageElementLocatorResolver;
+import Framework.wait.WaitJQueryAJAXCompleted;
 import Framework.model.Item;
 import Framework.service.TestDataReader;
-
-// import static Framework.utils.cartPageElementLocatorResolver.getRemoveItemButtonLocator;
 
 public class CartPageElement extends AbstractPage {
     private final String cartListChildrenLocator = "//*[@class='cart-list']//*";
@@ -33,17 +32,33 @@ public class CartPageElement extends AbstractPage {
     public CartPageElement openPage() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
-        wait.until(ExpectedConditions.visibilityOf(cartPopup));
+        try{
+            wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
+            wait.until(ExpectedConditions.visibilityOf(cartPopup));
 
-        return this;
+            logger.info("Opened CartPageElement");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not open CartPageElement" , e);
+            throw e;
+        }
     }
 
     public void closePage() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
-        wait.until(ExpectedConditions.invisibilityOf(cartPopup));
+        try{
+            wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
+            wait.until(ExpectedConditions.invisibilityOf(cartPopup));
+
+            logger.info("CartPageElement closed");
+
+        } catch(Exception e) {
+            logger.error("Could not close CartPageElement" , e);
+            throw e;
+        }
     }
 
     public boolean isEmpty() {
@@ -53,8 +68,14 @@ public class CartPageElement extends AbstractPage {
             wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(By.xpath(cartListChildrenLocator))
             );
+
+            logger.info("Cart is empty");
+
             return true;
+
         } catch(TimeoutException e) {
+            logger.info("Cart is not empty");
+
             return false;
         }
     }
@@ -62,16 +83,24 @@ public class CartPageElement extends AbstractPage {
     public CartPageElement removeItem(int itemOrder) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        WebElement removeItemButton = 
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    CartPageElementLocatorResolver.getRemoveItemButtonLocator(itemOrder)
-                )
-            );
-        removeItemButton.click();
-        wait.until(ExpectedConditions.invisibilityOf(removeItemButton));
+        try {
+            WebElement removeItemButton = 
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        CartPageElementLocatorResolver.getRemoveItemButtonLocator(itemOrder)
+                    )
+                );
+            removeItemButton.click();
+            wait.until(ExpectedConditions.invisibilityOf(removeItemButton));
 
-        return this;
+            logger.info("Item [" + itemOrder + "] removed from cart");
+
+            return this;
+
+        } catch (Exception e) {
+            logger.error("Could not remove item [" + itemOrder + "] from cart" , e);
+            throw e;
+        }
     }
 
     public CartPageElement removeItem() {
@@ -81,33 +110,48 @@ public class CartPageElement extends AbstractPage {
     public CartPageElement itemCountIncrease(int itemOrder) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(
-            ExpectedConditions.visibilityOfElementLocated(
-                CartPageElementLocatorResolver.getItemCountIncreaseButtonLocator(itemOrder)
-            )
-        ).click();
+        try {
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                    CartPageElementLocatorResolver.getItemCountIncreaseButtonLocator(itemOrder)
+                )
+            ).click();
+            wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
 
-        return this;
+            logger.info("Count of item [" + itemOrder + "] increased");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not increase count of item [" + itemOrder + "]" , e);
+            throw e;
+        }
     }
 
     public Item getItem(int itemOrder) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        String url =
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    CartPageElementLocatorResolver.getItemUrlLocator(itemOrder)
-                )
-            ).getAttribute("href")
-            .replace(TestDataReader.getTestData("Framework.test.site.prefix"), "");
+        try{
+            String url =
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        CartPageElementLocatorResolver.getItemUrlLocator(itemOrder)
+                    )
+                ).getAttribute("href")
+                .replace(TestDataReader.getTestData("Framework.test.site.prefix"), "");
 
-        String price =
-            wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                    CartPageElementLocatorResolver.getItemPriceLocator(itemOrder)
-                )
-            ).getText().replaceAll("[^\\d]", "");
+            String price =
+                wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                        CartPageElementLocatorResolver.getItemPriceLocator(itemOrder)
+                    )
+                ).getText().replaceAll("[^\\d]", "");
 
-        return new Item(url, Integer.parseInt(price));
+            return new Item(url, Integer.parseInt(price));
+
+        } catch(Exception e) {
+            logger.error("Could not get item [" + itemOrder + "]");
+            throw e;
+        }       
     }
 }

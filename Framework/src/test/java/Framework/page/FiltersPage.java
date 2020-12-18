@@ -22,13 +22,24 @@ public class FiltersPage extends ItemContainerAbstractPage {
     public FiltersPage setPage(String pageUrl) {
         this.pageUrl = pageUrl;
 
+        logger.info("Filters page URL set to [" + pageUrl + "]");
+
         return this;
     }
 
     public FiltersPage openPage() {
-        driver.get(BASE_URL + pageUrl);
+        try{
+            driver.get(BASE_URL + pageUrl);
 
-        return this;
+            logger.info("Opened FiltersPage");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not open FiltersPage" , e);
+
+            throw e;
+        }
     }
 
     @Override
@@ -41,14 +52,22 @@ public class FiltersPage extends ItemContainerAbstractPage {
     public FiltersPage clickCheckBox(String label) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(
-            ExpectedConditions.visibilityOfElementLocated(
-                FiltersPageLocatorResolver.getFillterCheckboxLocator(label)
-            )
-        ).click();
+        try{
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                    FiltersPageLocatorResolver.getFillterCheckboxLocator(label)
+                )
+            ).click();
+            wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
 
-        wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
+            logger.info("Clicked checkbox labeled [" + label + "] on Filters page");
+            
+            return this;
 
-        return this;
+        } catch(Exception e) {
+            logger.error("Could not click checkbox labeled [" + label + "]" , e);
+
+            throw e;
+        }
     }
 }

@@ -12,7 +12,6 @@ import org.openqa.selenium.Keys;
 import Framework.model.User;
 
 public class LoginPageElement extends AbstractPage {
-
     @FindBy(xpath = "(//*[@class='username'])[1]")
     private WebElement loginLink;
 
@@ -33,32 +32,74 @@ public class LoginPageElement extends AbstractPage {
     public LoginPageElement openPage() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
-        wait.until(ExpectedConditions.visibilityOf(loginPopup));
+        try{
+            wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
+            wait.until(ExpectedConditions.visibilityOf(loginPopup));
 
-        return this;
+            logger.info("Opened LoginPageElement");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not open LoginPageElement" , e);
+
+            throw e;
+        }
     }
 
     public void closePage() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
-        wait.until(ExpectedConditions.invisibilityOf(loginPopup));
+        try{
+            wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
+            wait.until(ExpectedConditions.invisibilityOf(loginPopup));
+
+            logger.info("Closed LoginPageElement");
+
+        } catch(Exception e) {
+            logger.error("Could not close LoginPageElement" , e);
+            
+            throw e;
+        }
     }
 
     public LoginPageElement login(User user) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(emailInputField)).sendKeys(user.getEmail());
-        wait.until(ExpectedConditions.visibilityOf(passwodrInputField)).sendKeys(user.getPassword());
-        wait.until(ExpectedConditions.visibilityOf(passwodrInputField)).sendKeys(Keys.ENTER);
+        try{
+            wait.until(ExpectedConditions.visibilityOf(emailInputField)).sendKeys(user.getEmail());
+            wait.until(ExpectedConditions.visibilityOf(passwodrInputField)).sendKeys(user.getPassword());
+            wait.until(ExpectedConditions.visibilityOf(passwodrInputField)).sendKeys(Keys.ENTER);
 
-        return this;
+            logger.info("Entered user credentials.  " 
+                + "Email: " + user.getEmail() 
+                + " Password: " + user.getPassword()
+            );
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not enter user cradentials" , e);
+
+            throw e;
+        }
     }
     
     public String getLoggedInUserName() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        return wait.until(ExpectedConditions.visibilityOf(loginLink)).getText();
+        try{
+            String loggedInUserName 
+                = wait.until(ExpectedConditions.visibilityOf(loginLink)).getText();
+
+            logger.info("Got logged in username: " + loggedInUserName);
+
+            return loggedInUserName;
+
+        } catch(Exception e) {
+            logger.error("Could not get logged in username" , e);
+
+            throw e;
+        }
     }
 }

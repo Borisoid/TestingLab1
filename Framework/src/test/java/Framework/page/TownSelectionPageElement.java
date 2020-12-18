@@ -5,12 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import Framework.wait.WaitJQueryAJAXCompleted;
-
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.FindBy;
+
+import Framework.wait.WaitJQueryAJAXCompleted;
 
 public class TownSelectionPageElement extends AbstractPage {
     @FindBy(id = "city-select-current-name")
@@ -30,27 +29,56 @@ public class TownSelectionPageElement extends AbstractPage {
     public TownSelectionPageElement openPage() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(townSelectionLink)).click();
-        wait.until(ExpectedConditions.visibilityOf(townSelectionInput));
+        try{
+            wait.until(ExpectedConditions.visibilityOf(townSelectionLink)).click();
+            wait.until(ExpectedConditions.visibilityOf(townSelectionInput));
 
-        return this;
+            logger.info("Opened TownSelectionPageElement");
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not open TownSelectionPageElement" , e);
+            
+            throw e;
+        }
     }
 
     public TownSelectionPageElement selectTown(String town) {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        wait.until(ExpectedConditions.visibilityOf(townSelectionInput)).sendKeys(town);
-        wait.until(ExpectedConditions.visibilityOf(townHints));
-        wait.until(ExpectedConditions.visibilityOf(townSelectionInput)).sendKeys(Keys.ENTER);
-        wait.until(ExpectedConditions.invisibilityOf(townSelectionInput));
-        wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
+        try{
+            wait.until(ExpectedConditions.visibilityOf(townSelectionInput)).sendKeys(town);
+            wait.until(ExpectedConditions.visibilityOf(townHints));
+            wait.until(ExpectedConditions.visibilityOf(townSelectionInput)).sendKeys(Keys.ENTER);
+            wait.until(ExpectedConditions.invisibilityOf(townSelectionInput));
+            wait.until(WaitJQueryAJAXCompleted.jQueryAJAXCompleted());
 
-        return this;
+            logger.info("Selected town: " + town);
+
+            return this;
+
+        } catch(Exception e) {
+            logger.error("Could not select town [" + town + "]" , e);
+
+            throw e;
+        }
     }
 
     public String getSelectedTown() {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
-        return wait.until(ExpectedConditions.visibilityOf(townSelectionLink)).getText(); 
+        try{
+            String town = wait.until(ExpectedConditions.visibilityOf(townSelectionLink)).getText();
+
+            logger.info("Got selected town: " + town);
+
+            return town;
+            
+        } catch(Exception e) {
+            logger.error("Could not get selected town name" , e);
+
+            throw e;
+        }
     }
 }
