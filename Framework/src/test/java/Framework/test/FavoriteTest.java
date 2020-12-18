@@ -9,7 +9,6 @@ import Framework.model.Item;
 import Framework.model.User;
 import Framework.service.UserCreator;
 import Framework.page.LoginPageElement;
-import Framework.page.MainPage;
 import Framework.page.ProductPage;
 
 public class FavoriteTest extends CommonConditions {
@@ -19,8 +18,6 @@ public class FavoriteTest extends CommonConditions {
 
         User user = UserCreator.constructFromProperties(1);
         Item expectedItem = ItemCreator.constructFromProperties(4);
-
-        new MainPage(driver).openPage();
 
         new LoginPageElement(driver)
             .openPage()

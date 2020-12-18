@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import Framework.page.LoginPageElement;
-import Framework.page.MainPage;
 import Framework.page.TownSelectionPageElement;
 import Framework.service.TestDataReader;
 import Framework.service.UserCreator;
@@ -16,8 +15,6 @@ public class UserDataTest extends CommonConditions {
         logger.info("loginTest");
 
         User user = UserCreator.constructFromProperties(1);
-
-        new MainPage(driver).openPage();
 
         String loggedInUserName = 
             new LoginPageElement(driver)
@@ -39,8 +36,6 @@ public class UserDataTest extends CommonConditions {
             TestDataReader.getTestData("Framework.test.userDataTest.setTownTest.inputValue");
         String expectedTownName =
             TestDataReader.getTestData("Framework.test.userDataTest.setTownTest.expectedValue");
-        
-        new MainPage(driver).openPage();
 
         Assert.assertEquals(
             expectedTownName, 

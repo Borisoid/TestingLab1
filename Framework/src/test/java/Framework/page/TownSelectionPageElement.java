@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.FindBy;
 
+import Framework.service.TestDataReader;
 import Framework.wait.WaitJQueryAJAXCompleted;
 
 public class TownSelectionPageElement extends AbstractPage {
@@ -30,6 +31,13 @@ public class TownSelectionPageElement extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         try{
+            if(!driver.getCurrentUrl().contains(
+                TestDataReader.getTestData("Framework.test.site.prefix")
+                )
+            ) {
+                new MainPage(driver).openPage();
+            }
+            
             wait.until(ExpectedConditions.visibilityOf(townSelectionLink)).click();
             wait.until(ExpectedConditions.visibilityOf(townSelectionInput));
 

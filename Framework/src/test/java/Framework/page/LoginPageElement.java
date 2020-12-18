@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.Keys;
 
 import Framework.model.User;
+import Framework.service.TestDataReader;
 
 public class LoginPageElement extends AbstractPage {
     @FindBy(xpath = "(//*[@class='username'])[1]")
@@ -33,6 +34,13 @@ public class LoginPageElement extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         try{
+            if(!driver.getCurrentUrl().contains(
+                TestDataReader.getTestData("Framework.test.site.prefix")
+                )
+            ) {
+                new MainPage(driver).openPage();
+            }
+
             wait.until(ExpectedConditions.visibilityOf(loginLink)).click();
             wait.until(ExpectedConditions.visibilityOf(loginPopup));
 

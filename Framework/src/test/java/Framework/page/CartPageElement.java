@@ -33,6 +33,13 @@ public class CartPageElement extends AbstractPage {
         Wait<WebDriver> wait = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
 
         try{
+            if(!driver.getCurrentUrl().contains(
+                TestDataReader.getTestData("Framework.test.site.prefix")
+                )
+            ) {
+                new MainPage(driver).openPage();
+            }
+
             wait.until(ExpectedConditions.visibilityOf(cartLink)).click();
             wait.until(ExpectedConditions.visibilityOf(cartPopup));
 
