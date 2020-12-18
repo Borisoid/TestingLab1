@@ -34,7 +34,7 @@ public class ProductPage extends AbstractPage {
         try{
             driver.get(BASE_URL + productUrl);
 
-            logger.info("Opened ProductPage");
+            logger.info("Opened ProductPage with " + productUrl);
 
             return this;
 

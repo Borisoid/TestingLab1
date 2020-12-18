@@ -13,7 +13,7 @@ import Framework.model.User;
 public class UserDataTest extends CommonConditions {
     @Test
     public void loginTest() {
-        logger.info("loggerTest");
+        logger.info("loginTest");
 
         User user = UserCreator.constructFromProperties(1);
 
