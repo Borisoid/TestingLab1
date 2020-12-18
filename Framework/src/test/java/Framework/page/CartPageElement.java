@@ -154,6 +154,8 @@ public class CartPageElement extends AbstractPage {
                     )
                 ).getText().replaceAll("[^\\d]", "");
 
+            logger.info("Got item URL: " + url + " Price: " + price);
+
             return new Item(url, Integer.parseInt(price));
 
         } catch(Exception e) {
