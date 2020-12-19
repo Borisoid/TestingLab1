@@ -14,6 +14,18 @@ public class ComparisonTest extends CommonConditions {
     public void compareItemsTest() {
         logger.info("compareItemsTest");
 
+        String comparisonRow = 
+            TestDataReader.getTestData("Framework.test.comparisonTest.compareItems.row");
+        
+        String firstItemExpectedComparedParameter = 
+            TestDataReader.getTestData(
+                "Framework.test.comparisonTest.compareItems.row.1.item.1.expectedValue"
+            );
+        String secondItemExpectedComparedParameter = 
+            TestDataReader.getTestData(
+                "Framework.test.comparisonTest.compareItems.row.1.item.2.expectedValue"
+            );
+
         Item firstItem = ItemCreator.constructFromProperties(1);
         Item secondItem = ItemCreator.constructFromProperties(2);
 
@@ -28,22 +40,12 @@ public class ComparisonTest extends CommonConditions {
         ComparisonPage comparisonPage = new ComparisonPage(driver).openPage();
 
         Assert.assertEquals(
-            TestDataReader.getTestData(
-                "Framework.test.comparisonTest.compareItems.row.1.item.1.expectedValue"
-            ), 
-            comparisonPage.getComparedParameter(
-                firstItem.getId(), 
-                TestDataReader.getTestData("Framework.test.comparisonTest.compareItems.row")
-            )
+            firstItemExpectedComparedParameter, 
+            comparisonPage.getComparedParameter(firstItem.getId(), comparisonRow)
         );
         Assert.assertEquals(
-            TestDataReader.getTestData(
-                "Framework.test.comparisonTest.compareItems.row.1.item.2.expectedValue"
-            ), 
-            comparisonPage.getComparedParameter(
-                secondItem.getId(), 
-                TestDataReader.getTestData("Framework.test.comparisonTest.compareItems.row")
-            )
+            secondItemExpectedComparedParameter, 
+            comparisonPage.getComparedParameter(secondItem.getId(), comparisonRow)
         );
     }
 }

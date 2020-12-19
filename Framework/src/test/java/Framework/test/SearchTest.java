@@ -18,7 +18,7 @@ public class SearchTest extends CommonConditions{
             new SearchPage(driver)
                 .openPage()
                 .search(TestDataReader.getTestData("Framework.test.searchTest.searchRequest"))
-                .getItem(TestDataReader.getTestData("Framework.test.searchTest.expectedItemId"));
+                .getItem(expectedItem.getId());
 
         Assert.assertEquals(expectedItem, actualItem);
     }

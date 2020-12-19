@@ -45,17 +45,18 @@ public class CartTest extends CommonConditions {
         Item firstExpectedItem = ItemCreator.constructFromProperties(1);
         Item secondExpectedItem = ItemCreator.constructFromProperties(2);
 
-        new ProductPage(driver)
-            .setProduct(firstExpectedItem.getUrl())
-            .openPage()
-            .buy()
-            .closeModalPopupIfPresent(firstExpectedItem.getGiftModalPopupExpected())
-            .setProduct(secondExpectedItem.getUrl())
-            .openPage()
-            .buy()
-            .closeModalPopupIfPresent(secondExpectedItem.getGiftModalPopupExpected());
-
-        CartPageElement cartPageElement = new CartPageElement(driver).openPage();
+        CartPageElement cartPageElement = 
+            new ProductPage(driver)
+                .setProduct(firstExpectedItem.getUrl())
+                .openPage()
+                .buy()
+                .closeModalPopupIfPresent(firstExpectedItem.getGiftModalPopupExpected())
+                .setProduct(secondExpectedItem.getUrl())
+                .openPage()
+                .buy()
+                .closeModalPopupIfPresent(secondExpectedItem.getGiftModalPopupExpected())
+                .getCartPageElement()
+                .openPage();
 
         Item firstItemInCart = cartPageElement.getItem(1);
         Item secondItemInCart = cartPageElement.getItem(2);
@@ -73,9 +74,8 @@ public class CartTest extends CommonConditions {
         new ProductPage(driver)
             .setProduct(item.getUrl())
             .openPage()
-            .buy();
-
-        new CartPageElement(driver)
+            .buy()
+            .getCartPageElement()
             .openPage()
             .itemCountIncrease(1)
             .closePage();
@@ -97,22 +97,24 @@ public class CartTest extends CommonConditions {
         Item firstItem = ItemCreator.constructFromProperties(1);
         Item secondItem = ItemCreator.constructFromProperties(2);
 
-        new ProductPage(driver)
-            .setProduct(firstItem.getUrl())
-            .openPage()
-            .buy()
-            .closeModalPopupIfPresent(firstItem.getGiftModalPopupExpected())
-            .setProduct(secondItem.getUrl())
-            .openPage()
-            .buy()
-            .closeModalPopupIfPresent(secondItem.getGiftModalPopupExpected());
+        boolean isCartEmptyExpected = true;
 
-        Assert.assertTrue(
-            new CartPageElement(driver)
+        boolean isCartEmptyActual = 
+            new ProductPage(driver)
+                .setProduct(firstItem.getUrl())
+                .openPage()
+                .buy()
+                .closeModalPopupIfPresent(firstItem.getGiftModalPopupExpected())
+                .setProduct(secondItem.getUrl())
+                .openPage()
+                .buy()
+                .closeModalPopupIfPresent(secondItem.getGiftModalPopupExpected())
+                .getCartPageElement()
                 .openPage()
                 .removeItem()
                 .removeItem()
-                .isEmpty()
-        );
+                .isEmpty();
+
+        Assert.assertEquals(isCartEmptyExpected, isCartEmptyActual);
     }
 }

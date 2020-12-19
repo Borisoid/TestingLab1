@@ -72,4 +72,16 @@ public abstract class AbstractPage {
 
         return this;
     }
+
+    public CartPageElement getCartPageElement() {
+        return new CartPageElement(driver);
+    }
+
+    public LoginPageElement getLoginPageElement() {
+        return new LoginPageElement(driver);
+    }
+
+    public TownSelectionPageElement getTownSelectionPageElement() {
+        return new TownSelectionPageElement(driver);
+    }
 }

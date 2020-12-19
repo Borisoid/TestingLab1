@@ -14,18 +14,15 @@ public class UserDataTest extends CommonConditions {
     public void loginTest() {
         logger.info("loginTest");
 
-        User user = UserCreator.constructFromProperties(1);
+        User expectedUser = UserCreator.constructFromProperties(1);
 
         String loggedInUserName = 
             new LoginPageElement(driver)
                 .openPage()
-                .login(user)
+                .login(expectedUser)
                 .getLoggedInUserName();
 
-        Assert.assertEquals(
-            user.getUsername(), 
-            loggedInUserName
-        );
+        Assert.assertEquals(expectedUser.getUsername(), loggedInUserName);
     }
 
     @Test
@@ -36,13 +33,12 @@ public class UserDataTest extends CommonConditions {
             TestDataReader.getTestData("Framework.test.userDataTest.setTownTest.inputValue");
         String expectedTownName =
             TestDataReader.getTestData("Framework.test.userDataTest.setTownTest.expectedValue");
-
-        Assert.assertEquals(
-            expectedTownName, 
+        String actualTownName = 
             new TownSelectionPageElement(driver)
                 .openPage()
                 .selectTown(inputTownName)
-                .getSelectedTown()
-        );
+                .getSelectedTown();
+
+        Assert.assertEquals(expectedTownName, actualTownName);
     }
 }
